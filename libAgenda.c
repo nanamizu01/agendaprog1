@@ -54,7 +54,7 @@ struct agenda criaAgenda(int ano){
 }
 
 int validaData(struct data d, struct agenda ag){
-	if (ag.ano != d.ano ){
+	if (obtemAno(ag) != d.ano ){
 		return 0;
 
 	}else if(d.mes <= 0 || d.mes > 12){
@@ -62,42 +62,35 @@ int validaData(struct data d, struct agenda ag){
 
 	}else if(d.dia <= 0 || d.dia > 31){
 		return 0;
-
 	}
 	return 1;
+
 }
 
-struct compromisso leCompromisso(struct agenda ag){
+struct compromisso leCompromisso(){
 	struct compromisso compromissoNovo;
-	struct data dataValid;
-	int horaValid;
-	int validoData = 0;
-	int validoHora = 0;
+	struct data data;
+	int hora;
 
 	do{
-		printf("Para marcar um compromisso, primeiro informe a data.\n");
-		printf("Digite o dia: ");
-		scanf("\n %d", &dataValid.dia);
-		printf("Digite o mês: ");
-		scanf("\n %d", &dataValid.mes);
-		printf("Digite o ano: ");
-		scanf("\n %d", &dataValid.ano);
-		printf("Agora, informe o horário:\n");
-		scanf("\n %d", &horaValid);
+		printf("\nPara marcar um compromisso, primeiro informe a data.\n");
+		printf("\nDigite o dia: ");
+		scanf("\n %d", &data.dia);
+		printf("\nDigite o mês: ");
+		scanf("\n %d", &data.mes);
+		printf("\nDigite o ano: ");
+		scanf("\n %d", &data.ano);
+		printf("\nAgora, informe o horário: ");
+		scanf("\n %d", &hora);
 
-		validoData = validaData(dataValid, ag);
-
-		if(horaValid >=0 && horaValid < HORAS_DO_DIA){
-			validoHora = 1;
+		if(hora < 0 || hora >= HORAS_DO_DIA){
+			printf("\nHora inválida. Tente novamente.");
 		}
 
-		if(validoData == 0 || validoHora == 0){
-			printf("Data/hora inválida. Por favor, tente novamente.");
-		}
-	}while (validoData == 0 || validoHora == 0);
-
-	compromissoNovo.data_compr = dataValid;
-	compromissoNovo.hora_compr = horaValid;
+	}while(hora <= 0 || hora >= HORAS_DO_DIA);
+	
+	compromissoNovo.data_compr = data;
+	compromissoNovo.hora_compr = hora;	
 
 	return compromissoNovo;
 }
@@ -106,30 +99,36 @@ int verificaDisponibilidade(struct compromisso compr, struct agenda ag){
 	int diaCompromisso;
 
 	diaCompromisso = obtemDiaDoAno(compr.data_compr);
-	if (ag.agenda_do_ano[diaCompromisso].horas[compr.hora_compr] == 0){
+	if (ag.agenda_do_ano[diaCompromisso].horas[obtemHora(compr)] == 0){
 		return 1;
-	}
-	return 0;
+	}else
+		return 0;
 }
 
 struct agenda marcaCompromisso(struct agenda ag, struct compromisso compr){
 	int diaCompromisso;
 
 	diaCompromisso = obtemDiaDoAno(compr.data_compr);
-	ag.agenda_do_ano[diaCompromisso].horas[compr.hora_compr] = 1;
+	ag.agenda_do_ano[diaCompromisso].horas[obtemHora(compr)] = 1;
 
 	return ag;
 }
 
 /* mostra as datas e horas de todos os compromissos marcados na agenda */
 void listaCompromissos(struct agenda ag){
+	int qtdCompromisso = 0;
+
+	printf("\nLista de compromissos na agenda: ");
+
 	for(int indexDia = 0; indexDia < DIAS_DO_ANO; indexDia++){
 		for(int indexHora = 0; indexHora < HORAS_DO_DIA; indexHora++){
 			if (ag.agenda_do_ano[indexDia].horas[indexHora] == 1){
-				//printf("\n Data: %d/%d/%d, %d:00.", dia, mes, ano, hora);
+				printf("\n Dia %d de 2023, %d horas.", indexDia, indexHora);
+				qtdCompromisso++;
 			}
-
 		}
 	}
+	if(qtdCompromisso == 0){
+		printf("\nAinda não há nenhum compromisso marcado na agenda.");
+	}
 }
-
