@@ -37,12 +37,8 @@ int obtemDiaDoAno(struct data d);
  * livre */ 
 struct agenda criaAgenda(int ano);
 
-/* lê um compromisso passado pelo usuário, com data completa e hora pretendida. 
- * O compromisso deve ser validado, isto é, a data deve estar correta, 
- * considerando os dias de cada mês e o ano da agenda criada, assim como a  
- * a hora, que deve ser entre 0 e 23, sem frações. 
- * Retorna um compromisso válido. */
-struct compromisso leCompromisso(struct agenda ag);
+/* lê um compromisso passado pelo usuário, com data completa e hora pretendida. */
+struct compromisso leCompromisso();
 
 /* dado um compromisso, retorna a hora definida */
 int obtemHora(struct compromisso compr);
