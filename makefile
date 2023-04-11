@@ -1,14 +1,12 @@
-all: agenda
+
 agenda: libAgenda.o main.o
-	gcc -o libAgenda.o main.o
+	gcc  libAgenda.o main.o -o agenda
 
 libAgenda.o: libAgenda.c
-	gcc -o libAgenda.o libAgenda.c -Wall -Werror -Wextra -pedantic
+	gcc -Wall -Werror -Wextra -pedantic -c libAgenda.c
 
-main.o: main.c libAgenda.h
-	gcc -o main.o main.c -Wall -Werror -Wextra -pedantic
+main.o: main.c 
+	gcc -Wall -Werror -Wextra -pedantic -c main.c
 
 clean:
-	rm -rf *.o
-mrproper: clean
-	rm -rf agenda
+	rm -rf *.o agenda
