@@ -5,8 +5,6 @@
  * pelo prof. Andre Gregio.
  */
 
-#include <stdio.h>
-#include <time.h>
 #include "libAgenda.h"
 
 #define LIVRE 0
@@ -40,6 +38,18 @@ int obtemDiaDoAno(struct data d){
 
 /* Daqui para frente eh com voces! */
 
+struct agenda criaAgenda(int ano){
+    struct agenda novaAg;
+    novaAg.ano = ano;
+
+    for(int indexDia = 0; indexDia < DIAS_DO_ANO; indexDia++){
+        for(int indexHora = 0; indexHora < HORAS_DO_DIA; indexHora++){
+            novaAg.agenda_do_ano[indexDia].horas[indexHora] = 0;
+        }
+    }
+    return novaAg;
+}
+
 int obtemAno(struct agenda *ag){
     return (*ag).ano;
 }
@@ -53,7 +63,7 @@ int validaData(struct agenda *ag, struct data *d){
         return 0;
     else if(d->mes <= 0 || d->mes > MESES_NO_ANO)
         return 0;
-    else if(d->dia <= 0 || d->dia > 24)
+    else if(d->dia <= 0 || d->dia > 31)
         return 0;
     else 
         return 1;    
@@ -91,8 +101,17 @@ void marcaCompromisso(struct agenda *ag, struct compromisso *compr){
     ag->agenda_do_ano[diaCompromisso].horas[obtemHora(compr)] = OCUPADA;
 }
 
-/* Mostra as datas e horas de todos os compromissos marcados na agenda.
- * Se a agenda nao tiver compromissos agendados nao imprime nada */
 void listaCompromissos(struct agenda *ag){
-    
+
+    for(int indexDia = 0; indexDia < DIAS_DO_ANO; indexDia++){
+
+		for(int indexHora = 0; indexHora < HORAS_DO_DIA; indexHora++){
+
+			if (ag->agenda_do_ano[indexDia].horas[indexHora]){
+				printf ("dia: %3d, ", indexDia);
+                printf ("ano: %4d, ", obtemAno(ag));
+                printf ("hora: %2d, compromisso!\n", indexHora);
+			}
+		}
+	}
 }
