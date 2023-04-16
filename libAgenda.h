@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <time.h>
 #define HORAS_DO_DIA 24
 #define MESES_NO_ANO 12
 #define DIAS_DO_ANO 365
