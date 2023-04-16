@@ -51,13 +51,10 @@ int obtemHora(struct compromisso *compr){
 int validaData(struct agenda *ag, struct data *d){
     if(obtemAno(ag) != d->ano)
         return 0;
-
     else if(d->mes <= 0 || d->mes > MESES_NO_ANO)
         return 0;
-
     else if(d->dia <= 0 || d->dia > 24)
         return 0;
-
     else 
         return 1;    
 }
@@ -69,9 +66,33 @@ int validaHora(struct compromisso *compr){
         return 1;
 }
 
-/* Le um compromisso do teclado (dia, mes, ano e hora, nesta ordem) 
- * Devolve o compromisso no parametro e retorna 1 se o compromisso
- * eh valido ou 0 caso contrario */
 int leCompromisso(struct agenda *ag, struct compromisso *compr){
+    scanf("\n%d %d %d %d", &compr->data_compr.dia, &compr->data_compr.mes,
+        &compr->data_compr.ano, &compr->hora_compr);
+    
+    if(!validaData(ag, &compr->data_compr))
+        return 0;
+    else if(!validaHora(compr))
+        return 0;
+    else return 1;
+}
 
+int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr){
+    int diaCompromisso = obtemDiaDoAno(compr->data_compr);
+
+    if(ag->agenda_do_ano[diaCompromisso].horas[obtemHora(compr)] == LIVRE)
+        return 1;
+    else return 0;
+}
+
+void marcaCompromisso(struct agenda *ag, struct compromisso *compr){
+    int diaCompromisso = obtemDiaDoAno(compr->data_compr);
+
+    ag->agenda_do_ano[diaCompromisso].horas[obtemHora(compr)] = OCUPADA;
+}
+
+/* Mostra as datas e horas de todos os compromissos marcados na agenda.
+ * Se a agenda nao tiver compromissos agendados nao imprime nada */
+void listaCompromissos(struct agenda *ag){
+    
 }
