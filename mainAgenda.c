@@ -15,19 +15,19 @@ int main(){
         valido = leCompromisso(&agAtual, &compromissoNovo);
 
         if(!valido)
-            printf("\nData e/ou hora invalidos, compromisso nao inserido");
+            printf("Data e/ou hora invalidos, compromisso nao inserido");
         else {
             valido = verificaDisponibilidade(&agAtual, &compromissoNovo);
 
             if(!valido)
-                printf("\nData/Hora ocupada, compromisso nao inserido");
+                printf("Data/Hora ocupada, compromisso nao inserido");
             else{
                 marcaCompromisso(&agAtual, &compromissoNovo);
-                printf("\nCompromisso inserido com sucesso!");
+                printf("Compromisso inserido com sucesso!");
             }
         }
 
-        scanf("\n %c", &saida);
+        scanf("\n%c", &saida);
         if(saida == 's')
             end = 1;
     
