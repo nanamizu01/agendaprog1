@@ -40,16 +40,33 @@ int obtemDiaDoAno(struct data d){
 
 /* Daqui para frente eh com voces! */
 
-/* Valida um data lida do usuario; 
- * Retorna 1 se a data for valida e 0 caso contrario */
-int validaData(struct agenda *ag, struct data *d){
-    if(ag->ano = )
+int obtemAno(struct agenda *ag){
+    return (*ag).ano;
 }
 
-/* Valida uma hora lida do usuario; 
- * Retorna 1 se a hora for valida e 0 caso contrario */
-int validaHora(struct compromisso *compr){
+int obtemHora(struct compromisso *compr){
+    return (*compr).hora_compr;
+}
 
+int validaData(struct agenda *ag, struct data *d){
+    if(obtemAno(ag) != d->ano)
+        return 0;
+
+    else if(d->mes <= 0 || d->mes > MESES_NO_ANO)
+        return 0;
+
+    else if(d->dia <= 0 || d->dia > 24)
+        return 0;
+
+    else 
+        return 1;    
+}
+
+int validaHora(struct compromisso *compr){
+    if(obtemHora(compr) <= 0 || obtemHora(compr) > HORAS_DO_DIA)
+        return 0;
+    else
+        return 1;
 }
 
 /* Le um compromisso do teclado (dia, mes, ano e hora, nesta ordem) 
