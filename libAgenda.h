@@ -1,64 +1,73 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
 #define HORAS_DO_DIA 24
+#define MESES_NO_ANO 12
 #define DIAS_DO_ANO 365
 
-/* estrutura para representar uma data, composta por dia, mês e ano */
+/* Estrutura para representar uma data, composta por dia, mes e ano 
+ * 1 <= dia <= DIAS_DO_ANO
+ * 1 <= mes <= MESES_NO_ANO
+ * ano eh um inteiro qualquer */
 struct data {
 	int dia;
 	int mes;
 	int ano;
 };
 
-/* estrutura para representar um compromisso, isto é, uma data e uma hora */
+/* Estrutura para representar um compromisso, isto eh, uma data e uma hora */
 struct compromisso {
-	struct data data_compr;	/* dia, mês, ano */
-	int hora_compr; /* hora do compromisso entre 0 e 23 */
+	struct data data_compr;	/* dia, mes, ano */
+	int hora_compr;         /* hora do compromisso entre 0 e 23 */
 };
 
-/* estrutura para representar um dia do ano, composto por 24 horas */
+/* Estrutura para representar um dia do ano, composto por 24 horas */
 struct dias {
 	int horas[HORAS_DO_DIA];
 };
 
-/* estrutura para representar uma agenda de um dado ano, com 365 dias de 24 horas */
+/* Estrutura para representar uma agenda de um dado ano, 
+ * com 365 dias de 24 horas, nao considerar anos bissestos */
 struct agenda {
 	int ano;
-	struct dias agenda_do_ano[DIAS_DO_ANO]; /* vetor agenda do ano, a ser modificado em ano bissexto */
+	struct dias agenda_do_ano[DIAS_DO_ANO]; /* vetor agenda do ano */
 };
 
-/* função com implementação dada pelos professores para cálculo do dia do 
- * ano, que servirá de índice para o vetor da agenda */
-int obtemDiaDoAno(struct data d);
-
-/* inicializa a agenda do ano corrente, onde cada hora de cada dia deve ter o 
- * valor 0 para indicar que não há um compromisso marcado. Retorna uma agenda
- * livre */ 
+/* Inicializa a agenda do ano corrente, onde cada hora de cada dia deve ter o 
+ * valor 0 para indicar que nao ha um compromisso marcado. 
+ * Retorna uma agenda livre */
 struct agenda criaAgenda(int ano);
 
-/* lê um compromisso passado pelo usuário, com data completa e hora pretendida. */
-struct compromisso leCompromisso();
+/* Funcao para calculo do dia do ano, que sera o indice para o vetor da agenda
+ * O codigo sera fornecido pelos professores e nao devera ser alterado.
+ * Obs: o codigo fornecido para o tp2 eh diferente do fornecido no tp1! */
+int obtemDiaDoAno(struct data d);
 
-/* dado um compromisso, retorna a hora definida */
-int obtemHora(struct compromisso compr);
+/* Dado um compromisso, retorna a hora definida */
+int obtemHora(struct compromisso *compr);
 
-/* retorna o ano atribuído a uma agenda criada */
-int obtemAno(struct agenda ag);
+/* Retorna o ano atribuido a uma agenda criada */
+int obtemAno(struct agenda *ag);
 
-/* Valida uma data lida do usuário; utilizar como função auxiliar da função
- * leCompromisso(). Retorna 0 se a data for inválida */
-int validaData(struct data d, struct agenda ag);
+/* Le um compromisso do teclado (dia, mes, ano e hora, nesta ordem) 
+ * Devolve o compromisso no parametro e retorna 1 se o compromisso
+ * eh valido ou 0 caso contrario */
+int leCompromisso(struct agenda *ag, struct compromisso *compr);
 
-/* Retorna 0 se data e horário já estiverem ocupados, 1 se data e horário
- * estiverem livres */
-int verificaDisponibilidade(struct compromisso compr, struct agenda ag);
+/* Valida um data lida do usuario; 
+ * Retorna 1 se a data for valida e 0 caso contrario */
+int validaData(struct agenda *ag, struct data *d);
 
-/* Dada uma agenda e um compromisso válido, isto é, com data/hora válidos, 
- * hora livre e dentro do ano da agenda, muda o valor da hora do compromisso
- * de 0 (livre) para 1 (ocupado). Retorna a nova agenda com o compromisso
- * marcado. */
-struct agenda marcaCompromisso(struct agenda ag, struct compromisso compr);
+/* Valida uma hora lida do usuario; 
+ * Retorna 1 se a hora for valida e 0 caso contrario */
+int validaHora(struct compromisso *compr);
 
-/* mostra as datas e horas de todos os compromissos marcados na agenda */
-void listaCompromissos(struct agenda ag);
+/* Retorna 0 se data e horario já estiverem ocupados, ou 1 caso contrario */
+int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr);
+
+/* Esta funcao considera que o comprimisso eh valido e a agenda esta livre
+ * para da data/hora fornecidos, portanto quem chama esta funcao tem que
+ * garantir estas informacoes. Portanto, a funcao simplesmente muda o valor
+ * da hora do compromisso de livre para ocupado */
+void marcaCompromisso(struct agenda *ag, struct compromisso *compr);
+
+/* Mostra as datas e horas de todos os compromissos marcados na agenda.
+ * Se a agenda nao tiver compromissos agendados nao imprime nada */
+void listaCompromissos(struct agenda *ag);
